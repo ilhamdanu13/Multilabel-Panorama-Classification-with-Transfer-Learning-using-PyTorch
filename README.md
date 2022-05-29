@@ -40,19 +40,36 @@ Does our data qualify? yes, our data has 3 channels, the image must also be load
 # Multilabel Dataset
 ![multilabel dataset](https://user-images.githubusercontent.com/86812576/170875865-0c0feabf-834f-4439-aabc-97062ca159de.png)
 
-MultilabelDataset adalah tempat dimana data akan dimuat, strukturnya adalah "folder_data" ->  dipisah menjadi "test", dan "train" dan tidak dipisah perkelas, karena setiap 1 gambar mencakup lebih dari satu label, sedangkan file metadata dalam bentuk file csv. 
+MultilabelDataset is where the data will be loaded, its structure is "folder_data" -> split into "test", and "train" and not separated by class, because each image includes more than one label, while the metadata file is in the form of a csv file.
 
 # About MobileNet V2
 Brief description of MobileNet V2:
 ### Overall Architecture
 ![1_5iA55983nBMlQn9f6ICxKg](https://user-images.githubusercontent.com/86812576/170874052-f80451b4-eaff-4d39-8253-44b2d3153565.png)
+(_source: https://towardsdatascience.com/review-mobilenetv2-light-weight-model-image-classification-8febb490e61c_)
 
 ### ReLu6 Activation Function
 ![image](https://user-images.githubusercontent.com/86812576/170874589-a6f3ed78-d502-4064-86fa-18895ff3e2bc.png)
 
 ReLU6 is used due to its robustness when used with low-precision computation. (_source: https://towardsdatascience.com/review-mobilenetv2-light-weight-model-image-classification-8febb490e61c_)
 
+# Architecture and Config
+![image](https://user-images.githubusercontent.com/86812576/170876260-886093a3-45b8-4f6b-b437-7ab0d12a5f86.png)
 
+Actually there are many architectures that can be used, but in this case, as described, we will use the MobileNet V2 architecture because this architecture is lighter and more efficient to run.
 
+Then like scikit-learn, we prepare a variable for MobileNet V2, "pretrained=True" to load the model and its weight.
 
-MultilabelDataset is the place where the data will be loaded, its structure is "folder_name"/"file_name". do you think we want to shuffle the testloader? actually if it's not shuffled it's okay, but because at the end it will do a sanity check so I want the data randomly.
+Next, after loading the architecture, freeze all the weights first,
+
+### MobileNet V2 Architecture
+
+In the mnet architecture, after performing the feature extractor, it always ends with a classifier inserted into the neural network. The neural network is even train to data with 1000 classes, because it is train to image net. But we will only train to 5 classes according to our data, the way is to just overwrite and end with sigmoid because our case is a multilabel classification.
+
+The final result of the custom MobileNet V2 architecture for our case is as follows.
+
+![Screenshot 2022-05-29 222857](https://user-images.githubusercontent.com/86812576/170877533-a55cd8f8-261d-45b0-a3a7-6b1d6323f8bc.png)
+
+### Config
+Contains the parameters that you want to keep when the model is reloaded.
+
