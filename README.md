@@ -71,5 +71,25 @@ The final result of the custom MobileNet V2 architecture for our case is as foll
 ![Screenshot 2022-05-29 222857](https://user-images.githubusercontent.com/86812576/170877533-a55cd8f8-261d-45b0-a3a7-6b1d6323f8bc.png)
 
 ### Config
-Contains the parameters that you want to keep when the model is reloaded.
+Contains the parameters you want to keep when the model is reloaded. In this case I will save the "output_size", "batch_size", and "crop_size".
 
+# Phase 1: Adaption
+### MCOC (Model, Criterion, Optimizer, Callback)
+![Screenshot 2022-05-30 175652](https://user-images.githubusercontent.com/86812576/170978766-d6b13a81-9ab3-434a-a710-327caed4764f.png)
+
+Where the adaptation phase is to use a standard learning rate, because it's like training on a regular mini neural network, and a little patience to get a baseline for the first model, but after that, do tuning. It's easy with MCOC (Model, Criterion, Optimizer, and Callback). 
+
+The adaptation phase is also usually faster, and the score will increase with fine tuining, so usually in the transfer learning adaptation phase the score is quite high around 70-80%, once you do fine tuning you can jump to 90%.
+
+# Phase 2: Fine Tuning
+Where the learning rate is reduced, and the patience is increased. so the training will probably be slower, because we don't want to spoil what has been learned in the imagenet data. What is done here is:
+
+![Screenshot 2022-05-30 181725](https://user-images.githubusercontent.com/86812576/170981437-8c810a56-5a75-4037-a7ab-9a5bd0024884.png)
+
+Remember when fine tuning remove all or some layers, in this case I remove all. Next, use a lower learning rate optimizer. for callbacks, there is something called reset_early_stop(), because the first model uses early_stop_patience = 2, currently doing this training early stop patience has touched number 2, so reset early stop to 0 and do it again with early stop patience 5.
+
+# Predict before model
+![Screenshot 2022-05-30 182604](https://user-images.githubusercontent.com/86812576/170982735-85907fea-8cd2-4473-aa5d-655e4fe88bc4.png)
+
+Initial prediction before train model.
+in the case of multilabel (binary), each label has a probability of 0 - 100%, then using a threshold of 0.5, meaning that the output is greater than 0.5 then it is a prediction (it is in the image) and converts to float32.
