@@ -88,8 +88,27 @@ Where the learning rate is reduced, and the patience is increased. so the traini
 
 Remember when fine tuning remove all or some layers, in this case I remove all. Next, use a lower learning rate optimizer. for callbacks, there is something called reset_early_stop(), because the first model uses early_stop_patience = 2, currently doing this training early stop patience has touched number 2, so reset early stop to 0 and do it again with early stop patience 5.
 
-# Predict before model
+# Training and Result
+
+![Screenshot 2022-05-30 210428](https://user-images.githubusercontent.com/86812576/171008942-2be53071-37d3-407c-996c-936314f0f5a0.png)
+
+The resulting model is quite overfit. But when checked on the sanitation check the results are quite generalized.
+
+# Predict
+
 ![Screenshot 2022-05-30 182604](https://user-images.githubusercontent.com/86812576/170982735-85907fea-8cd2-4473-aa5d-655e4fe88bc4.png)
 
-Initial prediction before train model.
-in the case of multilabel (binary), each label has a probability of 0 - 100%, then using a threshold of 0.5, meaning that the output is greater than 0.5 then it is a prediction (it is in the image) and converts to float32.
+In the case of multilabel (binary), each label has a probability of 0 - 100%, then using a threshold of 0.5, meaning that the output is greater than 0.5 then it is a prediction (it is in the image) and converts to float32.
+
+### Sanity check predict before train model
+Random prediction before train model
+
+![image](https://user-images.githubusercontent.com/86812576/171005368-5b0e8819-1b67-40f0-9d0f-9521673cc75e.png)
+
+
+### Sanity check predict after train model
+![image](https://user-images.githubusercontent.com/86812576/171006350-40e788aa-4ed6-4eb3-a7c6-3b37cc82090c.png)
+
+We can see in the prediction results that the model is quite good because it can predict many images.
+
+If you see the wrong prediction results (red color) the model is actually not too bad. There are several images in the sanity check that are considered wrong predictions, when in fact the model can predict correctly.
