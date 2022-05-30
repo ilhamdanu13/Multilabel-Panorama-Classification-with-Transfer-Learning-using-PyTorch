@@ -129,6 +129,8 @@ Random prediction before train model
 
 
 ### Sanity check predict after train model
+Sanity check after train fine tuning model.
+
 ![image](https://user-images.githubusercontent.com/86812576/171006350-40e788aa-4ed6-4eb3-a7c6-3b37cc82090c.png)
 
 We can see in the prediction results that the model is quite good because it can predict many images.
