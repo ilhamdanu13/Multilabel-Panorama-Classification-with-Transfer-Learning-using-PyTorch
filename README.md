@@ -1,6 +1,28 @@
 # The Idea of Tranfer Learning
+## History
+  Starting from ILSVRC (ImageNet Large Scale Visual Recognition Challenge)
+There is a competition held by ImageNet, regarding image classification, object detection to image segmentation on a large scale, namely:
+- Object classification and localization: 150000 images, 1000 categories.
+- Object detection: 200 categories.
+- Object detection from video: 30 categories.
 
-# Multilabel-Panorama-Classification-with-Transfer-Learning-using-PyTorch
+  The goal is to create a model capable of classifying up to 1000 categories.
+Each winner will publish the model they made. So that people can use the model they created, this is called Transfer Learning, which is using the champion's model that has been trained in up to 1000 categories.
+
+## Use pretrained-model for our own case
+For example, there is VGG16, the idea is that VGG16 is a feature extractor so if there is an image it will be a small image, then it is flattened and entered into the neural network to predict.
+
+So if you want to use this model in your case, there are 2 phases:
+### Phase 1: Adaptation
+- Load a pretrained-model.
+- Freeze the feature extractor.
+- Modify the classifier to our data, leave it unfreezed.
+### Phase 2: Fine Tuning
+- Unfreeze some/all models to train, but use a lower learning rate. Because if the learning rate is large, it will damage the pretrained model.
+- Learning rate use only 10% of that used in the adaptation phase.
+- Fine tuning again with a smaller learning rate.
+
+# Multilabel Panorama Classification with Transfer Learning using PyTorch on Google Colab
 In this case, we use Multilabel Classification. the difference in multiclass is that the output is only 1 label which must be 100% with logsoftmax, while the multilabel output can be more than 1 label, because each label can have its own probability with Binary Cross Entropy (BCELoss) activation.
 # Import Packages
 import common packages:
@@ -77,7 +99,7 @@ Contains the parameters you want to keep when the model is reloaded. In this cas
 ### MCOC (Model, Criterion, Optimizer, Callback)
 ![Screenshot 2022-05-30 175652](https://user-images.githubusercontent.com/86812576/170978766-d6b13a81-9ab3-434a-a710-327caed4764f.png)
 
-Where the adaptation phase is to use a standard learning rate, because it's like training on a regular mini neural network, and a little patience to get a baseline for the first model, but after that, do tuning. It's easy with MCOC (Model, Criterion, Optimizer, and Callback). 
+Where the adaptation phase is to use a standard learning rate, because it's like training on a regular mini neural network, and a little patience to get a benchmark for the first model, but after that, do tuning. It's easy with MCOC (Model, Criterion, Optimizer, and Callback). 
 
 The adaptation phase is also usually faster, and the score will increase with fine tuining, so usually in the transfer learning adaptation phase the score is quite high around 70-80%, once you do fine tuning you can jump to 90%.
 
@@ -112,3 +134,8 @@ Random prediction before train model
 We can see in the prediction results that the model is quite good because it can predict many images.
 
 If you see the wrong prediction results (red color) the model is actually not too bad. There are several images in the sanity check that are considered wrong predictions, when in fact the model can predict correctly.
+
+# Mislabeled Data?
+![image](https://user-images.githubusercontent.com/86812576/171012469-012c07db-3a6b-48e3-8971-49d77970f66d.png)
+
+It turns out that a lot of data is mislabeled. But our model actually managed to predict the images correctly.
